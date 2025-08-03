@@ -8,7 +8,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Vite-Client
+    origin: "https://1vs1vs1vs1.vercel.app/", // Vite-Client
     methods: ["GET", "POST"],
   },
 });
