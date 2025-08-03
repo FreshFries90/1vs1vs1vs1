@@ -10,7 +10,8 @@ span {
   line-height: 25px;
 }
 p,
-a {
+a,
+div {
   font-family: "Luckiest Guy";
 }
 .spielerliste {
