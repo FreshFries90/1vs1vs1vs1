@@ -5,7 +5,7 @@ import "./Viewer.css";
 const socket = io("https://onevs1vs1vs1.onrender.com");
 
 // 🎨 Farben für Segmente (Türkis, Gelb, Pink)
-const defaultColors = ["#00C9A7", "#FFD166", "#EF476F"];
+const defaultColors = ["#00C9A7", "#FFD166", "#EF476F", "#5C6BC0"];
 
 export default function Viewer() {
   const [players, setPlayers] = useState([]);
