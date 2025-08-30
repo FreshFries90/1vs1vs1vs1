@@ -34,9 +34,10 @@ export default function Viewer() {
       }
     });
 
-    socket.on("startWheel", () => {
-      console.log("StartWheel empfangen");
-      spinWheel();
+    // ⬇️ Startsignal enthält jetzt winnerIndex vom Server
+    socket.on("startWheel", ({ winnerIndex }) => {
+      if (winnerIndex === null || winnerIndex === undefined) return;
+      spinWheel(winnerIndex);
     });
 
     return () => {
@@ -47,7 +48,8 @@ export default function Viewer() {
     };
   }, [wheelEntries]);
 
-  const spinWheel = () => {
+  // ⬇️ Nimmt nun den vom Server vorgegebenen Index
+  const spinWheel = (targetIndex) => {
     const canvas = canvasRef.current;
     if (!canvas || wheelEntries.length === 0) return;
 
@@ -55,23 +57,9 @@ export default function Viewer() {
     const width = canvas.width;
     const center = width / 2;
 
-    let totalWeight = wheelEntries.reduce((sum, e) => sum + e.weight, 0);
-    if (totalWeight <= 0) totalWeight = wheelEntries.length;
-
-    const rand = Math.random() * totalWeight;
-    let cumulative = 0;
-    let selectedIndex = 0;
-
-    for (let i = 0; i < wheelEntries.length; i++) {
-      cumulative += wheelEntries[i].weight || 1;
-      if (rand <= cumulative) {
-        selectedIndex = i;
-        break;
-      }
-    }
-
+    // Rotation exakt auf das Zielsegment ausrichten
     const segmentAngle = 360 / wheelEntries.length;
-    const stopAngle = segmentAngle * selectedIndex + segmentAngle / 2;
+    const stopAngle = segmentAngle * targetIndex + segmentAngle / 2;
     const fullSpins = 5;
     const finalRotation = 360 * fullSpins + stopAngle + 90;
 
@@ -93,14 +81,8 @@ export default function Viewer() {
         requestAnimationFrame(animate);
       } else {
         drawWheel(ctx, center, finalRotation);
-
-        // Gewinner korrekt bestimmen
-        const normalizedRotation = finalRotation % 360;
-        const angleFromTop = (360 - normalizedRotation + 90) % 360;
-        const winnerIndex = Math.floor(
-          (angleFromTop / 360) * wheelEntries.length
-        );
-        const winner = wheelEntries[winnerIndex];
+        // Gewinnertext direkt aus targetIndex setzen (keine lokale Neuberechnung)
+        const winner = wheelEntries[targetIndex];
         setWinnerText(winner?.text || "???");
       }
     };
@@ -126,7 +108,7 @@ export default function Viewer() {
       ctx.moveTo(0, 0);
       ctx.arc(0, 0, center - 10, start, end);
       ctx.closePath();
-      ctx.fillStyle = defaultColors[i % defaultColors.length]; // 🔥 Farben automatisch
+      ctx.fillStyle = defaultColors[i % defaultColors.length];
       ctx.fill();
 
       ctx.save();

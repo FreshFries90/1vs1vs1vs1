@@ -48,7 +48,28 @@ io.on("connection", (socket) => {
 
   // 🌀 Glücksrad ausführen
   socket.on("startWheel", () => {
-    io.emit("startWheel");
+    const entries = Array.isArray(latestWheelEntries) ? latestWheelEntries : [];
+    if (entries.length === 0) {
+      io.emit("startWheel", { winnerIndex: null }); // nichts zu drehen
+      return;
+    }
+
+    // Gewichtete Auswahl (weight <= 0 -> 1)
+    const weights = entries.map((e) =>
+      typeof e.weight === "number" && e.weight > 0 ? e.weight : 1
+    );
+    const total = weights.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    let winnerIndex = 0;
+    for (let i = 0; i < weights.length; i++) {
+      if (r < weights[i]) {
+        winnerIndex = i;
+        break;
+      }
+      r -= weights[i];
+    }
+
+    io.emit("startWheel", { winnerIndex });
   });
 
   socket.on("disconnect", () => {
