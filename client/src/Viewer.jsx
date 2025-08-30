@@ -61,7 +61,7 @@ export default function Viewer() {
     const segmentAngle = 360 / wheelEntries.length;
     const stopAngle = segmentAngle * targetIndex + segmentAngle / 2;
     const fullSpins = 5;
-    const finalRotation = 360 * fullSpins + stopAngle + 90;
+    const finalRotation = 360 * fullSpins + stopAngle + 270;
 
     const duration = 3000;
     let start = null;
