@@ -148,7 +148,7 @@ export default function Viewer() {
       <img
         src="/logo.png"
         alt="Challenge Logo"
-        style={{ maxWidth: "160px", marginBottom: "2rem" }}
+        style={{ maxWidth: "240px", marginBottom: "2rem" }}
       />
 
       <div className="spielerliste" style={{ marginBottom: "2rem" }}>
