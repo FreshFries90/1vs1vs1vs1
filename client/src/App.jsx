@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("https://onevs1vs1vs1.onrender.com");
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 function App() {
   const [players, setPlayers] = useState([]);

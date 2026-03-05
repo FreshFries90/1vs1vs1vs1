@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import "./Viewer.css";
 
-const socket = io("https://onevs1vs1vs1.onrender.com");
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 // 🎨 Farben für Segmente (Türkis, Gelb, Pink)
 const defaultColors = ["#00C9A7", "#FFD166", "#EF476F", "#5C6BC0"];
