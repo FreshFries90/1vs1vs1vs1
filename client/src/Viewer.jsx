@@ -174,7 +174,7 @@ export default function Viewer() {
           <div
             style={{
               position: "absolute",
-              top: "calc(50% + 155px)",
+              top: "calc(50% + 105px)",
               left: "50%",
               transform: "translateX(-50%)",
               width: 0,
